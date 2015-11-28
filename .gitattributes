@@ -1,0 +1,3 @@
+roles/chat/vars/main.yml filter=git-crypt diff=git-crypt
+roles/chat/files/chat.noisebridge.net.crt filter=git-crypt diff=git-crypt
+roles/chat/files/chat.noisebridge.net.key filter=git-crypt diff=git-crypt

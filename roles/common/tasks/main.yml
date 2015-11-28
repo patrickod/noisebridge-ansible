@@ -1,0 +1,7 @@
+---
+ - name: Install sudo
+   apt: package=sudo state=latest update_cache=yes cache_valid_time=3600
+   tags:
+     - apt
+ - name: add patrickod to sudoers
+   user: name=patrickod group=patrickod shell=/bin/bash groups=sudo append=yes

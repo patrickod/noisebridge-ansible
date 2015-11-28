@@ -1,0 +1,43 @@
+---
+ # install the postgresql database
+ - name: Install PostgreSQL server with tools
+   apt:
+     pkg: "{{ item }}"
+     state: latest
+     update_cache: yes
+     cache_valid_time: 3600
+   with_items:
+     - postgresql
+     - postgresql-contrib
+     - libpq-dev
+     - python-psycopg2
+   tags:
+     - apt
+     - postgresql
+     - mattermost
+
+ - name: Add Mattermost PostgreSQL role
+   postgresql_user:
+     name: mattermost
+     password: "{{ mattermost_postgresql_password }}"
+     state: present
+   become: yes
+   become_user: postgres
+   become_method: sudo
+   tags:
+     - postgresql
+     - mattermost
+
+ - name: Add Mattermost PostgreSQL database
+   postgresql_db:
+     name: mattermost
+     state: present
+     owner: mattermost
+     encoding: "UTF-8"
+     template: "template0"
+   become: yes
+   become_user: postgres
+   become_method: sudo
+   tags:
+     - postgresql
+     - mattermost

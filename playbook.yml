@@ -1,0 +1,9 @@
+---
+ - hosts: digitalocean
+   remote_user: patrickod
+
+   su: yes
+   su_user: root
+   roles:
+     - { role: common }
+     - { role: chat }

@@ -1,0 +1,43 @@
+---
+ - name: Add mattermost user
+   user:
+     name=mattermost
+     state=present
+     shell=/bin/false
+   tags:
+     - user
+     - mattermost
+
+ - name: Create the mattermost data directory
+   file: path=/home/mattermost/data state=directory owner=mattermost group=mattermost
+
+ - name: Create the mattermost releases directory
+   file: path=/home/mattermost/releases state=directory owner=mattermost group=mattermost
+
+ - name: Download the mattermost release
+   get_url:
+     url: "https://github.com/mattermost/platform/releases/download/v{{ mattermost_version}}/mattermost.tar.gz"
+     sha256sum: "{{ mattermost_release_checksum }}"
+     dest: "/home/mattermost/releases/{{ mattermost_version }}.tar.gz"
+   become: yes
+   become_user: mattermost
+   become_method: sudo
+
+ - name: Create the mattermost release directory for current release
+   file: path="/home/mattermost/releases/{{ mattermost_version }}" state=directory owner=mattermost group=mattermost
+
+ - name: Extract the mattermost release
+   command: "tar --strip-components=1 -xzf /home/mattermost/releases/{{ mattermost_version }}.tar.gz --directory=/home/mattermost/releases/{{ mattermost_version }}"
+   args:
+     creates: "/home/mattermost/releases/{{ mattermost_version }}/bin/platform"
+   become: yes
+   become_user: mattermost
+   become_method: sudo
+
+
+ - name: Configure mattermost
+   template:
+     src: mattermost_config.json
+     dest: "/home/mattermost/releases/{{ mattermost_version }}/config/config.json"
+     owner: mattermost
+     group: mattermost

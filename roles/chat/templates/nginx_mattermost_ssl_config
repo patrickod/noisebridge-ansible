@@ -1,0 +1,27 @@
+server {
+    listen 443 ssl;
+    server_name chat.noisebridge.net;
+
+    ssl_certificate      /etc/nginx/certs/chat.noisebridge.net.crt;
+    ssl_certificate_key  /etc/nginx/certs/chat.noisebridge.net.key;
+
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    # Only strong ciphers in PFS mode
+    ssl_ciphers ECDHE-RSA-AES256-SHA:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+    location / {
+        client_max_body_size 50M;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Frame-Options   SAMEORIGIN;
+        proxy_pass http://127.0.0.1:8065;
+    }
+}

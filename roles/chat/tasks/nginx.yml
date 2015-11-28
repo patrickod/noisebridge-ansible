@@ -1,0 +1,67 @@
+---
+ - name: Install nginx
+   apt:
+     pkg: nginx
+     state: latest
+     update_cache: yes
+     cache_valid_time: 3600
+   tags:
+     - apt
+     - nginx
+
+ - name: install nginx vhost
+   template:
+     src: "{{ item }}"
+     dest: "/etc/nginx/sites-available/{{ item }}.conf"
+     owner: www-data
+     group: www-data
+   with_items:
+     - nginx_mattermost_config
+     - nginx_mattermost_ssl_config
+   tags:
+     - nginx
+
+ - name: create the nginx certs directory
+   file:
+     state: directory
+     dest: /etc/nginx/certs
+     owner: www-data
+     group: www-data
+   tags:
+     - nginx
+
+ - name: install ssl certificates
+   copy:
+     src: "{{ item }}"
+     dest: "/etc/nginx/certs/{{ item }}"
+     group: www-data
+     owner: root
+   with_items:
+    - chat.noisebridge.net.crt
+    - chat.noisebridge.net.key
+   tags:
+     - nginx
+     - ssl
+
+ - name: configure vhost link
+   file:
+     src: "/etc/nginx/sites-available/{{ item }}.conf"
+     dest: "/etc/nginx/sites-enabled/{{ item }}.conf"
+     state: link
+     owner: www-data
+     group: www-data
+   with_items:
+     - nginx_mattermost_config
+     - nginx_mattermost_ssl_config
+   notify:
+     - restart nginx
+   tags:
+     - nginx
+
+ - name: start nginx
+   service:
+     name: nginx
+     state: started
+     enabled: yes
+   tags:
+     - nginx
