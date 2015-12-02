@@ -14,12 +14,11 @@
     },
     "TeamSettings": {
         "SiteName": "Mattermost",
-        "MaxUsersPerTeam": 50,
-        "EnableTeamCreation": true,
+        "MaxUsersPerTeam": 1024,
+        "EnableTeamCreation": false,
         "EnableUserCreation": true,
         "RestrictCreationToDomains": "",
         "RestrictTeamNames": true,
-        "EnableTeamListing": false
     },
     "SqlSettings": {
         "DriverName": "postgres",
