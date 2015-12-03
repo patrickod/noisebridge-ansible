@@ -39,7 +39,7 @@
     },
     "FileSettings": {
         "DriverName": "local",
-        "Directory": "./data/",
+        "Directory": "/home/mattermost/data",
         "EnablePublicLink": true,
         "PublicLinkSalt": "{{ mattermost_public_link_salt }}",
         "ThumbnailWidth": 120,
