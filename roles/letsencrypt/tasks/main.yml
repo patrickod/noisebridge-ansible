@@ -1,0 +1,47 @@
+---
+ - name: add letsencrypt user
+   user:
+    name: letsencrypt
+    state: present
+    shell: /bin/false
+    system: yes
+   tags:
+     - user
+     - letsencrypt
+
+ - name: install letsencrypt repository
+   file:
+     path: /etc/apt/sources.list.d/letsencrypt.list
+     state: absent
+
+ - name: install git
+   apt:
+     pkg: git
+     state: present
+     update_cache: yes
+     cache_valid_time: 3600
+
+ - name: clone letsencryt
+   git:
+     repo: https://github.com/letsencrypt/letsencrypt.git
+     version: v0.1.0
+     accept_hostkey: yes
+     dest: /home/letsencrypt/letsencrypt
+
+ - name: create letsencrypt directory
+   file:
+     path: /etc/letsencrypt
+     owner: letsencrypt
+     group: www-data
+     state: directory
+     
+ - name: install letsencrypt config
+   copy:
+     src: letsencrypt.ini
+     dest: /etc/letsencrypt/cli.ini
+     owner: letsencrypt
+     group: www-data
+
+ - name: provision letsencrypt certificates
+   command: /home/letsencrypt/letsencrypt/letsencrypt-auto --agree-tos certonly
+

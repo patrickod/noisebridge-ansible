@@ -9,6 +9,13 @@
      - apt
      - nginx
 
+ - name: create chat webroot
+   file:
+     path: /var/www/chat.noisebridge.net
+     state: directory
+     group: www-data
+     owner: www-data
+
  - name: install nginx vhost
    template:
      src: "{{ item }}"

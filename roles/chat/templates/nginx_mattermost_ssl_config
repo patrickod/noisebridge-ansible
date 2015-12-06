@@ -14,6 +14,11 @@ server {
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
     location / {
+        root /var/www/chat.noisebridge.net;
+        try_files $uri @mattermost;
+    }
+
+    location @mattermost {
         client_max_body_size 50M;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
