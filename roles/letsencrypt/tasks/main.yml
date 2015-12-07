@@ -44,4 +44,46 @@
 
  - name: provision letsencrypt certificates
    command: /home/letsencrypt/letsencrypt/letsencrypt-auto --agree-tos certonly
+   args:
+     creates: /etc/letsencrypt/live/chat.noisebridge.net/fullchain.pem
 
+ - name: create symlinx for cert
+   file:
+     src: /etc/letsencrypt/live/chat.noisebridge.net/fullchain.pem
+     dest: /etc/nginx/certs/chat.noisebridge.net.crt
+     state: link
+     owner: www-data
+     group: www-data
+     force: yes
+   tags:
+     - nginx
+     - letsencrypt
+   notify:
+     - restart nginx
+    
+ - name: create symlink for key
+   file:
+     src: /etc/letsencrypt/live/chat.noisebridge.net/privkey.pem
+     dest: /etc/nginx/certs/chat.noisebridge.net.key
+     state: link
+     owner: www-data
+     group: www-data
+     force: yes
+   notify:
+     - restart nginx
+   tags:
+     - nginx
+     - letsencrypt
+
+ - name: create root bin directory
+   file:
+     path: /root/bin
+     owner: root
+     group: root
+     state: directory
+
+ - name: install autole in root
+   copy:
+    src: autole
+    dest: /root/bin/autole
+    mode: 744

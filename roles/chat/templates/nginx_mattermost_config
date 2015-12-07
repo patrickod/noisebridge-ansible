@@ -1,8 +1,10 @@
 server {
-    server_name mattermost.vm.noisebridge.net;
+    server_name chat.noisebridge.net;
+
     location /.well-known/ {
-        root /var/www/chat.noisebridge.net/.well-known;
+        root /var/www/chat.noisebridge.net/;
     }
+
     location / {
         return 301 https://$host$request_uri;
     }
