@@ -1,0 +1,3 @@
+---
+ - name: restart postfix
+   action: service name=nginx state=restarted

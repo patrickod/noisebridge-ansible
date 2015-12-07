@@ -1,0 +1,23 @@
+---
+ - name: install postfix
+   apt:
+     pkg: postfix
+     state: latest
+     update_cache: yes
+     cache_valid_time: 3600
+
+ - name: Disable Postfix configuration in debconf
+   debconf:
+     name: 'postfix'
+     question: 'postfix/main_mailer_type'
+     vtype: 'select'
+     value: 'No configuration'
+
+ - name: install postfix configuration
+   copy:
+     src: main.cf
+     dest: /etc/postfix/main.cf
+     owner: root
+     group: root
+   notify:
+     - restart postfix

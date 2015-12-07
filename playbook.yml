@@ -8,3 +8,4 @@
      - { role: common }
      - { role: chat }
      - { role: letsencrypt }
+     - { role: postfix }
