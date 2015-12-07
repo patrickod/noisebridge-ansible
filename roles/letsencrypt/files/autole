@@ -14,21 +14,21 @@
 ##
 ##    REMAINING DAYS TO EXPIRE BEFORE RENEW
 ##
-DAYSTORENEW=10 
+DAYSTORENEW=14 
 ##
 ##   REMAINING DAYS TO EXPIRE BEFORE ALERT
 ##
-DAYSTOALERT=5
+DAYSTOALERT=7
 ##
 ##    EMAIL TO ALERT IF UNABLE TO RENEW
 ##
-ALERTEMAIL=root@localhost
+ALERTEMAIL=hostmaster@noisebridge.net
 ##
 ##    EMAIL ACCOUNT ON LETS ENCRYPT
 ##
-LEEMAIL=admin@damia.net
+LEEMAIL=hostmaster@noisebridge.net
 ## 
-WEBROOT=/var/www/html/le
+WEBROOT=/var/www/chat.noisebridge.net
 ##WEBROOT=/var/www/html/le/$1
 ##
 ##

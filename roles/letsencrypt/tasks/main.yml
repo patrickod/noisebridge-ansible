@@ -81,9 +81,23 @@
      owner: root
      group: root
      state: directory
+   tags:
+     - letsencrypt
 
  - name: install autole in root
    copy:
-    src: autole
-    dest: /root/bin/autole
-    mode: 744
+     src: autole
+     dest: /root/bin/autole
+     mode: 744
+   tags:
+     - letsencrypt
+
+ - name: install renewal cron
+   cron:
+     name: renew chat.noisebridge.net cert
+     user: root
+     job: "/root/bin/autole chat.noisebridge.net"
+     minute: 0
+     hour: 12
+   tags:
+     - letsencrypt
